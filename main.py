@@ -84,11 +84,12 @@ df_short_title = pd.read_sql(
 # Sum the rounded total price for each order
 sum_total_price = pd.read_sql(
     """
-    SELECT ROUND(priceEach * quantityOrdered, 2) AS total_price
+    SELECT ROUND(priceEach * quantityOrdered, 0) AS total_price
     FROM orderDetails
     """,
     conn,
-).sum()
+).sum().tolist()
+
 
 # STEP 9
 # Return the order date split into day, month, and year components
@@ -100,7 +101,7 @@ df_day_month_year = pd.read_sql(
         strftime('%d', orderDate) AS day,
         strftime('%m', orderDate) AS month,
         strftime('%Y', orderDate) AS year
-    FROM orderDetails
+    FROM orders
     """,
     conn,
 )
